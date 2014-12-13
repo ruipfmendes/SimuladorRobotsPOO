@@ -9,12 +9,17 @@ package simuladorrobots;
  *
  * @author Rui Mendes
  */
-public abstract class Entidade extends Bloco {
-    private int ID;
-    private String cor;
-    private String forma;
-    private coordXY coordenadas;
-
+public abstract class Entidade {
+    protected int ID;
+    protected String cor;
+    protected String forma;
+    protected coordXY coordenadas;
+    Entidade(int entID, String entCor, String entForma, coordXY entCoordenadas){
+        this.ID = entID;
+        this.cor = entCor;
+        this.forma = entForma;
+        this.coordenadas = entCoordenadas;
+    }
     public int getID() {
         return ID;
     }
@@ -24,11 +29,9 @@ public abstract class Entidade extends Bloco {
     public String getForma() {
         return forma;
     }
-    @Override
     public coordXY getCoordenadas() {
-        return super.getCoordenadas(); //To change body of generated methods, choose Tools | Templates.
+        return coordenadas;
     }
-
     public void setID(int ID) {
         this.ID = ID;
     }
@@ -40,5 +43,9 @@ public abstract class Entidade extends Bloco {
     }
     public void setCoordenadas(coordXY coordenadas) {
         this.coordenadas = coordenadas;
+    }
+    @Override
+    public String toString() {
+        return "Entidade "+ID+"; Cor: "+cor+"; Forma: "+forma+"; Coordenadas: "+coordenadas.toString()+"; "; //To change body of generated methods, choose Tools | Templates.
     }
 }

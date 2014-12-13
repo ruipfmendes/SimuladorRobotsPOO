@@ -16,7 +16,17 @@ public class SimuladorRobots {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        Ambiente amb = new Ambiente();
+        amb.configTipoMundo();
+        amb.configTamanhoMundo();
+        amb.criarMundo();
+        amb.configNumEntidades();
+        amb.configNomesObjectos();
+        //amb.imprimirObjectosAmb();
+        //Agente agentes[] = new Agente[amb.getNumAgentes()];
+        Objecto objectos [] = new Objecto[amb.getNumObjectos()];
+        amb.criarEntidades(objectos);
+        
     }
     
 }

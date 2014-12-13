@@ -9,15 +9,12 @@ package simuladorrobots;
  *
  * @author Rui Mendes
  */
-public class coordXY extends Bloco{
+public class coordXY {
     private int xcoord;
     private int ycoord;
     coordXY(int coordx, int coordy){
         this.xcoord = coordx;
         this.ycoord = coordy;
-    }
-    coordXY(){
-        
     }
     public int getXcoord() {
         return this.xcoord;
@@ -30,5 +27,8 @@ public class coordXY extends Bloco{
     }
     public void setYcoord(int ycoord) {
         this.ycoord = ycoord;
+    }
+    public String toString() {
+        return "("+xcoord+","+ycoord+")"; //To change body of generated methods, choose Tools | Templates.
     }
 }
