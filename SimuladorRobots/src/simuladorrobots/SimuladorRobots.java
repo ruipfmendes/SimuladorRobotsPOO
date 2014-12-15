@@ -26,7 +26,6 @@ public class SimuladorRobots {
         //Agente agentes[] = new Agente[amb.getNumAgentes()];
         Objecto objectos [] = new Objecto[amb.getNumObjectos()];
         amb.criarEntidades(objectos);
-        
     }
     
 }

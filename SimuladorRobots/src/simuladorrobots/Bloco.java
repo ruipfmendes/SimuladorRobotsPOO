@@ -12,21 +12,32 @@ import java.util.*;
  */
 public class Bloco {
     private coordXY coordenadas;
-    private ArrayList<Entidade> entidadesNoBloco = new ArrayList<Entidade>();
+    private Objecto objectoNoBloco = null;
+    private ArrayList<Agente> agentesNoBloco = new ArrayList<Agente>();    
+//    private ArrayList<Entidade> entidadesNoBloco = new ArrayList<Entidade>();
 //    private ArrayList<Integer> entNoBlocoID = new ArrayList<Integer>();
     
     public coordXY getCoordenadas() {
         return this.coordenadas;
     }
-    public ArrayList<Entidade> getEntNoBlocoID() {
-        return entidadesNoBloco;
+    public Objecto getObjectoNoBloco() {
+        return this.objectoNoBloco;
     }
-    public void inserirEntidade(Entidade ent){
-        entidadesNoBloco.add(ent);
+    public ArrayList<Entidade> getAgNoBloco() {
+        return this.agentesNoBloco;
     }
-    public void removerEntidade(Entidade ent){
-        entidadesNoBloco.remove(entidadesNoBloco.indexOf(ent));
-   }
+    public void setObjectoNoBloco(Objecto objectoNoBloco) {
+        this.objectoNoBloco = objectoNoBloco;
+    }
+    public void setCoordenadas(coordXY coordenadas) {
+        this.coordenadas = coordenadas;
+    }
+    public void inserirAgente(Agente ag){
+        agentesNoBloco.add(ag);
+    }
+    public void removerAgente(Agente ag){
+        agentesNoBloco.remove(agentesNoBloco.indexOf(ag));
+    }
 //    public ArrayList<Integer> getEntNoBlocoID() {
 //        return entNoBlocoID;
 //    }
@@ -48,4 +59,5 @@ public class Bloco {
          }
          return infBloco;
     }
+
 }

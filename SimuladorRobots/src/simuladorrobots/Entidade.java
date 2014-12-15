@@ -13,7 +13,7 @@ public abstract class Entidade {
     protected int ID;
     protected String cor;
     protected String forma;
-    protected coordXY coordenadas;
+    public coordXY coordenadas;
     Entidade(int entID, String entCor, String entForma, coordXY entCoordenadas){
         this.ID = entID;
         this.cor = entCor;
