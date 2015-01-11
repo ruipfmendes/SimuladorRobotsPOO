@@ -23,6 +23,6 @@ public class Objecto extends Entidade {
     }
     @Override
     public String toString() {
-        return super.toString()+"Nome do Objecto: "+nomeObj+";"; //To change body of generated methods, choose Tools | Templates.
+        return "Nome do Objecto: "+nomeObj+"; "+super.toString(); //To change body of generated methods, choose Tools | Templates.
     }
 }

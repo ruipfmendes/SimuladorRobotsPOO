@@ -21,16 +21,16 @@ public abstract class Entidade {
         this.coordenadas = entCoordenadas;
     }
     public int getID() {
-        return ID;
+        return this.ID;
     }
     public String getCor() {
-        return cor;
+        return this.cor;
     }
     public String getForma() {
-        return forma;
+        return this.forma;
     }
     public coordXY getCoordenadas() {
-        return coordenadas;
+        return this.coordenadas;
     }
     public void setID(int ID) {
         this.ID = ID;

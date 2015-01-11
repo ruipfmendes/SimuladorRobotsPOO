@@ -29,6 +29,6 @@ public class coordXY {
         this.ycoord = ycoord;
     }
     public String toString() {
-        return "("+xcoord+","+ycoord+")"; //To change body of generated methods, choose Tools | Templates.
+        return "("+(xcoord+1)+","+(ycoord+1)+")"; //To change body of generated methods, choose Tools | Templates.
     }
 }

@@ -14,12 +14,16 @@ public class Ambiente {
     private int tamanhoMundo;
     private int tipoMundo;
     private String[] nomeObjectos;
-    private String[] nomeObjExploracao = {"Rocha","Pedaço de Asteróide","Cratera"};
-    private String[] nomeObjEmergencia = {"Ambulância","Destroços","Voluntário"};
-    private String[] nomeObjDomestico = {"Mesa","Cadeira","Caixote do lixo","Televisao","Prato","Eletrodoméstico","Cama"};
+    private final String[] nomeObjExploracao = {"Rocha", "Pedaço de Asteróide", "Cratera"};
+    private final String[] nomeObjEmergencia = {"Ambulância", "Destroços", "Voluntário"};
+    private final String[] nomeObjDomestico = {"Mesa", "Cadeira", "Caixote do lixo", "Televisao", "Prato", "Eletrodoméstico", "Cama"};
     private Bloco[][] mundo;
     private int numAgentes;
     private int numObjectos;
+    private int tempoVidaInicial = 1; //Atençao que neste momento cada agente tem o seu tempo de vida; Nao sei se devem todos começar com o mesmo
+
+    public Ambiente() {
+    }
     public int getNumAgentes() {
         return this.numAgentes;
     }
@@ -32,6 +36,19 @@ public class Ambiente {
     public int getTipoMundo() {
         return this.tipoMundo;
     }
+    public int getTempoVidaInicial() {
+        return this.tempoVidaInicial;
+    }
+    public String[] getNomeObjectos() {
+        return this.nomeObjectos;
+    }
+    public String getNomeObjecto(int num) {
+        return this.nomeObjectos[num];
+    }
+
+    public void setTempoVidaInicial(int tempoVidaInicial) {
+        this.tempoVidaInicial = tempoVidaInicial;
+    }
     public void setNumAgentes(int numAgentes) {
         this.numAgentes = numAgentes;
     }
@@ -43,6 +60,43 @@ public class Ambiente {
     }
     public void setTipoMundo(int tipoMundo) {
         this.tipoMundo = tipoMundo;
+    }
+    public void configTempoVida(){
+        Scanner sc = new Scanner(System.in);
+        int num = 0;
+            do {
+                System.out.print("Indique o Tempo de Vida dos Agentes (mínimo 1): ");
+                while (!sc.hasNextInt()) {
+                    System.out.println("Não inseriu um número");
+                    sc.next();
+                    System.out.print("Indique o Tempo de Vida dos Agentes (mínimo 1): ");
+                }
+                num = sc.nextInt();
+            } while (num < 1);
+            setTempoVidaInicial(num);
+    }
+    
+    public void configTipoMundo(){
+        Scanner sc = new Scanner(System.in);
+        int seleccao = 0;
+        do {
+            System.out.println("Mundos:");
+            System.out.println("1: Mundo com ambiente de exploração");
+            System.out.println("2: Mundo com ambiente de emergência");
+            System.out.println("3: Mundo com ambiente doméstico");
+            System.out.print("Seleccione o tipo de mundo que deseja simular: ");
+            while (!sc.hasNextInt()) {
+                System.out.println("Não inseriu um número");
+                sc.next();
+                System.out.println("Mundos:");
+                System.out.println("1: Mundo com ambiente de exploração");
+                System.out.println("2: Mundo com ambiente de emergência");
+                System.out.println("3: Mundo com ambiente doméstico");
+                System.out.print("Seleccione o tipo de mundo que deseja simular: ");
+            }
+            seleccao = sc.nextInt();
+        } while(seleccao != 1 && seleccao != 2 && seleccao != 3);
+        setTipoMundo(seleccao);
     }
     
     public void configTamanhoMundo(){
@@ -74,195 +128,16 @@ public class Ambiente {
             numAg = sc.nextInt();
         } while (numAg < 1);
         do {
-            System.out.print("Indique o numero de Objectos (mínimo 1): ");
+            System.out.print("Indique o numero de Objectos (mínimo 1; máximo "+(int)Math.pow(tamanhoMundo,2)+"): ");
             while (!sc.hasNextInt()) {
                 System.out.println("Não inseriu um número");
                 sc.next();
-                System.out.print("Indique o numero de Objectos (mínimo 1): ");
+                System.out.print("Indique o numero de Objectos (mínimo 1; máximo "+(int)Math.pow(tamanhoMundo,2)+"): ");
             }
             numObj = sc.nextInt();
-        } while (numObj < 1);
+        } while (numObj < 1 || numObj > Math.pow(tamanhoMundo,2));
         setNumAgentes(numAg);
         setNumObjectos(numObj);
-    }
-    
-    public void criarEntidades( Objecto[] objs){
-        Scanner sc = new Scanner(System.in);
-        String cores[] = new String[5];
-        String formas[] = new String[3];
-        
-        int id=1;
-        cores[0] = "Verde";
-        cores[1] = "Azul";
-        cores[2] = "Vermelho";
-        cores[3] = "Amarelo";
-        cores[4] = "Preto";
-        formas[0] = "Triangular";
-        formas[1] = "Quadrangular";
-        formas[2] = "Pentagonal";
-        
-        // Criar e configurar os Agentes
-        /*for(int i=1;i<=numAgentes;i++){
-            int selCor = 0;
-            int selForma = 0;
-            coordXY selCoord;
-            int coordX = 0;
-            int coordY = 0;
-            int selEstrategia = 0;
-            int raioVisao = 0;
-            System.out.println("\nConfiguração do Agente "+i+" - Entidade "+id);
-            do {
-                System.out.println("Escolha a estratégia do Agente "+i+":\n 1 - Aleatório; 2 - Máxima Diferença de Hamming; 3 - Proximidade;");
-                while (!sc.hasNextInt()) {
-                    System.out.println("Não inseriu um número");
-                    sc.next();
-                    System.out.println("Escolha a estratégia do Agente "+i+":\n 1 - Aleatório; 2 - Máxima Diferença de Hamming; 3 - Proximidade;");
-                }
-                selEstrategia = sc.nextInt();
-            } while(selEstrategia != 1 && selEstrategia != 2 && selEstrategia != 3);
-            do {
-                System.out.println("Escolha a cor do Agente "+i+":\n 1 - "+cores[0]+"; 2 - "+cores[1]+"; 3 - "+cores[2]+"; 4 - "+cores[3]+"; 5 - "+cores[4]+";");
-                while (!sc.hasNextInt()) {
-                    System.out.println("Não inseriu um número");
-                    sc.next();
-                    System.out.println("Escolha a cor do Agente "+i+":\n 1 - "+cores[0]+"; 2 - "+cores[1]+"; 3 - "+cores[2]+"; 4 - "+cores[3]+"; 5 - "+cores[4]+";");
-                }
-                selCor = sc.nextInt();
-            } while(selCor != 0 && selCor != 1 && selCor != 2 && selCor != 3 && selCor != 4);
-            do {
-                System.out.println("Escolha a forma do Agente "+i+":\n 1 - "+formas[0]+"; 2 - "+formas[1]+"; 3 - "+formas[2]+";");
-                while (!sc.hasNextInt()) {
-                    System.out.println("Não inseriu um número");
-                    sc.next();
-                    System.out.println("Escolha a forma do Agente "+i+":\n 1 - "+formas[0]+"; 2 - "+formas[1]+"; 3 - "+formas[2]+";");
-                }
-                selForma = sc.nextInt();
-            } while(selForma != 1 && selForma != 2 && selForma != 3);
-            do {
-                System.out.println("Escolha o raio de visão do Agente "+i+" (mínimo 1) :");
-                while (!sc.hasNextInt()) {
-                    System.out.println("Não inseriu um número");
-                    sc.next();
-                    System.out.println("Escolha o raio de visão do Agente "+i+" (mínimo 1) :");
-                }
-                raioVisao = sc.nextInt();
-            } while(raioVisao <= 1);
-            do {
-                System.out.println("Escolha as coordenadas iniciais do Agente "+i+" (mínimo 1 e máximo "+tamanhoMundo+")\n Indique a coordenada X :");
-                while (!sc.hasNextInt()) {
-                    System.out.println("Não inseriu um número");
-                    sc.next();
-                    System.out.println("Escolha as coordenadas iniciais do Agente "+i+" (mínimo 1 e máximo "+tamanhoMundo+")\n Indique a coordenada X :");
-                }
-                coordX = sc.nextInt();
-            } while(coordX <= 1 && coordX >= tamanhoMundo);
-            do {
-                System.out.println("Escolha as coordenadas iniciais do Agente "+i+" (mínimo 1 e máximo "+tamanhoMundo+")\n Indique a coordenada Y :");
-                while (!sc.hasNextInt()) {
-                    System.out.println("Não inseriu um número");
-                    sc.next();
-                    System.out.println("Escolha as coordenadas iniciais do Agente "+i+" (mínimo 1 e máximo "+tamanhoMundo+")\n Indique a coordenada Y :");
-                }
-                coordY = sc.nextInt();
-            } while(coordY <= 1 && coordY >= tamanhoMundo);
-            selCoord = new coordXY(coordX,coordY);
-            if(selEstrategia == 1){
-                ags[i] = new AgenteAleatorio(id,cores[selCor-1],formas[selForma-1],selCoord,raioVisao);
-            }
-            else if(selEstrategia == 2){
-                ags[i] = new AgenteMaxDif(id,cores[selCor-1],formas[selForma-1],selCoord,raioVisao);
-            }
-            else if(selEstrategia == 3){
-                ags[i] = new AgenteProximo(id,cores[selCor-1],formas[selForma-1],selCoord,raioVisao);
-            }
-            id++;
-        }*/
-        for(int j=1;j<=numObjectos;j++){
-            int selCor = 0;
-            int selForma = 0;
-            coordXY selCoord;
-            int coordX = 0;
-            int coordY = 0;
-            int selNome = 0;
-
-            System.out.println("\nConfiguração do Objecto "+j+" - Entidade "+id);
-            do {
-                imprimirObjectosAmb();
-                System.out.print("Escolha o nome do Objecto "+j+": ");
-                while (!sc.hasNextInt()) {
-                    System.out.println("Não inseriu um número\n");
-                    sc.next();
-                    imprimirObjectosAmb();
-                    System.out.print("Escolha o nome do Objecto "+j+": ");
-                }
-                selNome = sc.nextInt();
-            } while(selNome < 1 || selNome > nomeObjectos.length);
-            do {
-                System.out.print("Cores:\n1 - "+cores[0]+"; 2 - "+cores[1]+"; 3 - "+cores[2]+"; 4 - "+cores[3]+"; 5 - "+cores[4]+";\nEscolha a cor do Objecto "+j+": ");
-                while (!sc.hasNextInt()) {
-                    System.out.println("Não inseriu um número");
-                    sc.next();
-                    System.out.print("Cores:\n1 - "+cores[0]+"; 2 - "+cores[1]+"; 3 - "+cores[2]+"; 4 - "+cores[3]+"; 5 - "+cores[4]+";\nEscolha a cor do Objecto "+j+": ");
-                }
-                selCor = sc.nextInt();
-            } while(selCor < 1 || selCor > cores.length);
-            do {
-                System.out.print("Formas:\n1 - "+formas[0]+"; 2 - "+formas[1]+"; 3 - "+formas[2]+";\nEscolha a forma do Objecto "+j+": ");
-                while (!sc.hasNextInt()) {
-                    System.out.println("Não inseriu um número");
-                    sc.next();
-                    System.out.print("Formas:\n1 - "+formas[0]+"; 2 - "+formas[1]+"; 3 - "+formas[2]+";\nEscolha a forma do Objecto "+j+": ");
-                }
-                selForma = sc.nextInt();
-            } while(selForma < 1 || selForma > formas.length);
-            do {
-                do {
-                    System.out.print("Escolha as coordenadas iniciais do Objecto "+j+" (mínimo 1 e máximo "+tamanhoMundo+")\nIndique a coordenada X: ");
-                    while (!sc.hasNextInt()) {
-                        System.out.println("Não inseriu um número");
-                        sc.next();
-                        System.out.print("Escolha as coordenadas iniciais do Objecto "+j+" (mínimo 1 e máximo "+tamanhoMundo+")\nIndique a coordenada X: ");
-                    }
-                    coordX = sc.nextInt();
-                } while(coordX < 1 || coordX > tamanhoMundo);
-                do {
-                    System.out.print("Escolha as coordenadas iniciais do Objecto "+j+" (mínimo 1 e máximo "+tamanhoMundo+")\nIndique a coordenada Y :");
-                    while (!sc.hasNextInt()) {
-                        System.out.println("Não inseriu um número");
-                        sc.next();
-                        System.out.print("Escolha as coordenadas iniciais do Objecto "+j+" (mínimo 1 e máximo "+tamanhoMundo+")\nIndique a coordenada Y :");
-                    }
-                    coordY = sc.nextInt();
-                } while(coordY < 1 || coordY > tamanhoMundo);
-            } while(mundo[coordX-1][coordY-1].getObjectoNoBloco() != null);
-            mundo[coordX-1][coordY-1].setObjectoNoBloco(objs[j-1]);
-            selCoord = new coordXY(coordX-1,coordY-1);
-            objs[j-1] = new Objecto(id,cores[selCor-1],formas[selForma-1],selCoord,nomeObjectos[selNome]);
-            id++;
-        }
-    }
-    
-    public void configTipoMundo(){
-        Scanner sc = new Scanner(System.in);
-        int seleccao = 0;
-        do {
-            System.out.println("Mundos:");
-            System.out.println("1: Mundo com ambiente de exploração");
-            System.out.println("2: Mundo com ambiente de emergência");
-            System.out.println("3: Mundo com ambiente doméstico");
-            System.out.print("Seleccione o tipo de mundo que deseja simular: ");
-            while (!sc.hasNextInt()) {
-                System.out.println("Não inseriu um número");
-                sc.next();
-                System.out.println("Mundos:");
-                System.out.println("1: Mundo com ambiente de exploração");
-                System.out.println("2: Mundo com ambiente de emergência");
-                System.out.println("3: Mundo com ambiente doméstico");
-                System.out.print("Seleccione o tipo de mundo que deseja simular: ");
-            }
-            seleccao = sc.nextInt();
-        } while(seleccao != 1 && seleccao != 2 && seleccao != 3);
-        setTipoMundo(seleccao);
     }
     
     public void configNomesObjectos(){
@@ -344,9 +219,28 @@ public class Ambiente {
             }
         }*/
     }
+    public Bloco getBloco(coordXY coordenadas){
+        //System.out.println("Bloco = X:"+coordenadas.getXcoord()+"; Y:"+coordenadas.getYcoord());
+        for(int i=0;i<tamanhoMundo;i++){
+            for(int j=0;j<tamanhoMundo;j++){
+                //System.out.println("X:"+mundo[i][j].getCoordenadas().getXcoord()+"; Y:"+mundo[i][j].getCoordenadas().getYcoord());
+                if(coordenadas.getXcoord() == mundo[i][j].getCoordenadas().getXcoord() && coordenadas.getYcoord() == mundo[i][j].getCoordenadas().getYcoord()){
+                    return mundo[i][j];
+                }
+            }
+        }
+        //System.out.println("Nao encontrou o bloco");
+        return null;
+    }
     
     public void criarMundo(){
         mundo = new Bloco[tamanhoMundo][tamanhoMundo];
+        for(int i=0;i<tamanhoMundo;i++){
+            for(int j=0;j<tamanhoMundo;j++){
+                mundo[i][j] = new Bloco(i,j);
+                //System.out.println(mundo[i][j].getCoordenadas().getXcoord());
+            }
+        }
         //System.out.println("Mundo criado");
     }
 }

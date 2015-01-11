@@ -12,25 +12,38 @@ import java.util.*;
  */
 public class Bloco {
     private coordXY coordenadas;
-    private Objecto objectoNoBloco = null;
+    //private int objectoNoBlocoID = 0;
+    private Objecto objectoNoBloco;
     private ArrayList<Agente> agentesNoBloco = new ArrayList<Agente>();    
 //    private ArrayList<Entidade> entidadesNoBloco = new ArrayList<Entidade>();
 //    private ArrayList<Integer> entNoBlocoID = new ArrayList<Integer>();
+    Bloco(int coordX, int coordY){
+        this.coordenadas = new coordXY(coordX,coordY);
+        this.objectoNoBloco = null;
+    }
     
     public coordXY getCoordenadas() {
         return this.coordenadas;
     }
+
     public Objecto getObjectoNoBloco() {
         return this.objectoNoBloco;
     }
-    public ArrayList<Entidade> getAgNoBloco() {
+    
+    //public int getObjectoNoBlocoID() {
+    //    return this.objectoNoBlocoID;
+    //}
+    public ArrayList<Agente> getAgNoBloco() {
         return this.agentesNoBloco;
+    }
+    //public void setObjectoNoBlocoID(int objectoNoBlocoID) {
+    //    this.objectoNoBlocoID = objectoNoBlocoID;
+    //}
+    public void setCoordenadas(coordXY coordenadas) {
+        this.coordenadas = coordenadas;
     }
     public void setObjectoNoBloco(Objecto objectoNoBloco) {
         this.objectoNoBloco = objectoNoBloco;
-    }
-    public void setCoordenadas(coordXY coordenadas) {
-        this.coordenadas = coordenadas;
     }
     public void inserirAgente(Agente ag){
         agentesNoBloco.add(ag);
@@ -50,11 +63,11 @@ public class Bloco {
     
     @Override
     public String toString() {
-         String infBloco = "Bloco "+coordenadas+"\n Entidades a ocupar bloco:"; //To change body of generated methods, choose Tools | Templates.
-         for(int i=0;i<entidadesNoBloco.size();i++){
-             infBloco += "\n"+entidadesNoBloco.get(i).toString();
+         String infBloco = "Bloco "+coordenadas+"\nEntidades a ocupar bloco:"; //To change body of generated methods, choose Tools | Templates.
+         for(int i=0;i<agentesNoBloco.size();i++){
+             infBloco += "\n"+agentesNoBloco.get(i).toString();
          }
-         if(entidadesNoBloco.isEmpty()){
+         if(agentesNoBloco.isEmpty()){
              infBloco += "\nNenhuma.";
          }
          return infBloco;
