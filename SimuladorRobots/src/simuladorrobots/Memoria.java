@@ -25,6 +25,10 @@ public class Memoria {
     public void removerObjecto(Objecto obj){
         this.memoriaAgente.remove(memoriaAgente.indexOf(obj));
     }
+
+    public ArrayList<Objecto> getMemoriaAgente() {
+        return memoriaAgente;
+    }
     
     /*public void limpaMemoria(){
         memoriaAgente.clear();

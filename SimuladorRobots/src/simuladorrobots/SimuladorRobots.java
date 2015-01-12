@@ -27,15 +27,15 @@ public class SimuladorRobots {
         Agente agentes[] = new Agente[amb.getNumAgentes()];
         Objecto objectos[] = new Objecto[amb.getNumObjectos()];
         criarEntidades(agentes,objectos,amb);
-        simularMovimento(agentes,amb);
+        turnosMovimento(agentes,amb);
     }
     
-    public static void simularMovimento(Agente[] agentes, Ambiente amb){
+    public static void turnosMovimento(Agente[] agentes, Ambiente amb){
         for(int j=0;j<amb.getTempoVidaInicial();j++){
             for(int i=0;i<amb.getNumAgentes();i++){
                 if(agentes[i].getTempoVida()>0){
                     if(agentes[i] instanceof AgenteAleatorio){
-                        agentes[i].agenteParaBloco(amb,agentes[i].escolherDestinoAgenteA(amb));
+                        agentes[i].agenteParaBloco(amb,agentes[i].escolherDestino(amb));
                         //blocoDestino = agentes[i].escolherDestinoAgenteA(amb);
                         //agentes[i].agenteParaBloco(amb,blocoDestino);
                     }
