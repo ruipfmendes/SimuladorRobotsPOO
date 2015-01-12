@@ -5,6 +5,9 @@
  */
 package simuladorrobots;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 /**
  *
  * @author Rui Mendes
@@ -64,9 +67,6 @@ public class Agente extends Entidade {
     public void setRaioVisao(int raioVisao) {
         this.raioVisao = raioVisao;
     }
-    public Bloco escolherDestino(Ambiente amb){
-        return null;
-    }
     
     public void agenteParaBloco(Ambiente amb, Bloco blocoDestino){
         int distancia=0;
@@ -82,6 +82,29 @@ public class Agente extends Entidade {
             memoria.inserirObjecto(blocoDestino.getObjectoNoBloco());
             System.out.println("O Agente "+ID+" conheceu e colocou em memoria o seguinte objecto: "+blocoDestino.getObjectoNoBloco().toString());
             numObjectos = this.getNumObjectos()+1;
+        }
+    }
+    public Bloco escolherDestinoAgenteA(Ambiente amb){
+        Random rand = new Random();
+        ArrayList<Bloco> blocosRaioVisao = new ArrayList<Bloco>();   
+        for(int i=0;i<amb.getTamanhoMundo();i++){
+            for(int j=0;j<amb.getTamanhoMundo();j++){
+                if(Math.abs(coordenadas.getXcoord() - amb.getBloco(new coordXY(i,j)).getCoordenadas().getXcoord())<= raioVisao && Math.abs(coordenadas.getYcoord() - amb.getBloco(new coordXY(i,j)).getCoordenadas().getYcoord())<= raioVisao && amb.getBloco(new coordXY(i,j)).getObjectoNoBloco() != null){
+                    blocosRaioVisao.add(amb.getBloco(new coordXY(i,j)));
+                    
+                }
+            }
+        }
+        if(blocosRaioVisao.size()>0){
+            int randomNum = rand.nextInt((blocosRaioVisao.size() - 0) + 0) + 0;
+            //System.out.println("Numero random = "+randomNum);
+            return blocosRaioVisao.get(randomNum);
+        }
+        else{
+            int randomX = rand.nextInt((raioVisao - 0) + 0) + 0;
+            int randomY = rand.nextInt((raioVisao - 0) + 0) + 0;
+            coordXY coordenadas = new coordXY(randomX,randomY);
+            return amb.getBloco(coordenadas);
         }
     }
     @Override
